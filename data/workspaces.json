@@ -1,0 +1,18 @@
+{
+  "rsql": {
+    "Workspace": [
+      {
+        "name": "test",
+        "classes": []
+      }
+    ],
+    "Workspaces": [
+      {
+        "workspaces": [
+          "test"
+        ],
+        "lastWorkspace": "test"
+      }
+    ]
+  }
+}
