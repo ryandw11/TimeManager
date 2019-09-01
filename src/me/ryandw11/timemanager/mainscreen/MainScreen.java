@@ -23,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.poi.xssf.usermodel.TextAlign;
 import org.apache.xmlbeans.impl.jam.JField;
@@ -30,6 +32,7 @@ import org.apache.xmlbeans.impl.jam.JField;
 import me.ryandw11.jtml.JTML;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.mainscreen.menu.MenuManager;
+import me.ryandw11.timemanager.mainscreen.menu.SortManager;
 import me.ryandw11.timemanager.orm.Student;
 
 /**
@@ -57,6 +60,7 @@ public class MainScreen {
 		frame.setSize(1200, 800);
 		frame.setMinimumSize(new Dimension(1200, 800));
 		frame.setResizable(true);
+		frame.setBackground(Color.white);
 		
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		String is = classloader.getResource("students.html").toExternalForm();
@@ -67,7 +71,8 @@ public class MainScreen {
 		MainScreen.jtml = jtml;
 		
 		makeRightButtons(rightButtons);
-		makeSort(leftButtons);
+//		makeSort(leftButtons);
+		leftButtons.add(new SortManager(MainScreen.jtml));
 		
 		frame.add(rightButtons, BorderLayout.EAST);
 		frame.add(leftButtons, BorderLayout.WEST);
@@ -83,39 +88,60 @@ public class MainScreen {
 	}
 	
 	protected void makeSort(JPanel pnl) {
-		Border bb = BorderFactory.createLineBorder(Color.black);
-		TitledBorder tt = BorderFactory.createTitledBorder(bb, "Sort Students");
-		JPanel jp = new JPanel();
-		jp.setLayout(new BorderLayout());
-		jp.setBorder(tt);
-		
-		JPanel clasz = new JPanel();
-		JLabel byClass = new JLabel("By Class:");
-		List<String> choices = new ArrayList<>();	//TODO Get classes
-		choices.add("None");
-		choices.add("Example Two");
-		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
-		clasz.add(byClass);
-		clasz.add(cb);
-		jp.add(clasz, BorderLayout.NORTH);
-		
-		JPanel grade = new JPanel();
-		JLabel byGrade = new JLabel("By Grade:");
-		SpinnerModel sm = new SpinnerNumberModel(1, 1, 12, 1);
-		JSpinner js = new JSpinner(sm);
-		grade.add(byGrade);
-		grade.add(js);
-		jp.add(grade, BorderLayout.CENTER);
-		
-		JPanel name = new JPanel();
-		JLabel byName = new JLabel("By Name:");
-		JTextField ji = new JTextField();
-		ji.setColumns(10);
-		name.add(byName);
-		name.add(ji);
-		jp.add(name, BorderLayout.SOUTH);
-		
-		pnl.add(jp);
+//		Border bb = BorderFactory.createLineBorder(Color.black);
+//		TitledBorder tt = BorderFactory.createTitledBorder(bb, "Sort Students");
+//		JPanel jp = new JPanel();
+//		jp.setLayout(new BorderLayout());
+//		jp.setBorder(tt);
+//		
+//		JPanel clasz = new JPanel();
+//		JLabel byClass = new JLabel("By Class:");
+//		List<String> choices = new ArrayList<>();	//TODO Get classes
+//		choices.add("None");
+//		choices.add("Example Two");
+//		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
+//		clasz.add(byClass);
+//		clasz.add(cb);
+//		jp.add(clasz, BorderLayout.NORTH);
+//		
+//		JPanel grade = new JPanel();
+//		JLabel byGrade = new JLabel("By Grade:");
+//		SpinnerModel sm = new SpinnerNumberModel(1, 1, 12, 1);
+//		JSpinner js = new JSpinner(sm);
+//		grade.add(byGrade);
+//		grade.add(js);
+//		jp.add(grade, BorderLayout.CENTER);
+//		
+//		JPanel name = new JPanel();
+//		JLabel byName = new JLabel("By Name:");
+//		JTextField ji = new JTextField();
+//		ji.setColumns(10);
+//		ji.getDocument().addDocumentListener(new DocumentListener() {
+//
+//			@Override
+//			public void changedUpdate(DocumentEvent arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void insertUpdate(DocumentEvent e) {
+//				System.out.println("sort('" + ji.getText() + "', null, null, null, null)");
+//				jtml.executeJavaScript("sort('" + ji.getText() + "', null, null, null, null)");
+//				
+//			}
+//
+//			@Override
+//			public void removeUpdate(DocumentEvent arg0) {
+//				jtml.executeJavaScript("sort('" + ji.getText() + "', null, null, null, null)");
+//			}
+//			
+//		});
+//		name.add(byName);
+//		name.add(ji);
+//		jp.add(name, BorderLayout.SOUTH);
+//		
+//		pnl.add(jp);
 		
 	}
 	

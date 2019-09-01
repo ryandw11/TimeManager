@@ -25,6 +25,7 @@ import javax.swing.event.DocumentListener;
 import me.ryandw11.rsql.RSQL;
 import me.ryandw11.rsql.properties.RProperties;
 import me.ryandw11.rsql.properties.subproperties.JSONProperties;
+import me.ryandw11.timemanager.mainscreen.MainScreen;
 import me.ryandw11.timemanager.orm.Workspace;
 import me.ryandw11.timemanager.orm.Workspaces;
 
@@ -175,7 +176,6 @@ public class FirstTime {
 				Workspace wp = new Workspace();
 				wp.name = name;
 				List<String> classes = new ArrayList<String>();
-//				classes.add("none");
 				wp.classes = classes;
 				Workspaces wps = new Workspaces();
 				wps.lastWorkspace = name;
@@ -187,6 +187,7 @@ public class FirstTime {
 				rsql.process(Arrays.asList(wps));
 				
 				close();
+				MainScreen ms = new MainScreen();
 				
 			}
 			
