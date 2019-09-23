@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import me.ryandw11.jtml.JTML;
+import me.ryandw11.rsql.RSQL;
+import me.ryandw11.rsql.properties.RProperties;
+import me.ryandw11.rsql.properties.subproperties.JSONProperties;
+import me.ryandw11.timemanager.Main;
+import me.ryandw11.timemanager.orm.Workspace;
 
 public class SortManager extends JPanel {
 	
@@ -70,8 +76,12 @@ public class SortManager extends JPanel {
 		JPanel clasz = new JPanel();
 		JLabel byClass = new JLabel("By Class:");
 		List<String> choices = new ArrayList<>();	//TODO Get classes
-		choices.add("None");
-		choices.add("Example Two");
+		choices.addAll(Main.currentWorkspace.classes);
+		boolean isDisabled = false;
+		if(choices.size() < 1) {
+			choices.add("None");
+			isDisabled = true;
+		}
 		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
 		cb.addActionListener(new ActionListener() {
 			@Override
@@ -81,6 +91,9 @@ public class SortManager extends JPanel {
 			}
 			
 		});
+		if(isDisabled) {
+			cb.setEnabled(false);
+		}
 		clasz.add(byClass);
 		clasz.add(cb);
 		this.add(clasz, BorderLayout.CENTER);
@@ -157,9 +170,9 @@ public class SortManager extends JPanel {
 		if(param2.replace("'", "").equals("None") || param2.replace("'", "").equals("Select A Class")) param2 = "null";
 		if(param3.replace("'", "").equals("0")) param3 = "null";
 		if(param5.replace("'", "").equals("0.0")) param5 = "null";
-		
+		Main.currentInstanceofMainScreen.selectedStudents = new ArrayList<>();
+		Main.currentInstanceofMainScreen.updateSelect();
 		jtml.executeJavaScript("sort(" + param1 + ", " + param2 + ", " + param3 + ", " + param4 + ", " + param5 + ")");
-		System.out.println("sort(" + param1 + ", " + param2 + ", " + param3 + ", " + param4 + ", " + param5 + ")");
 	}
 
 }

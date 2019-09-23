@@ -1,15 +1,26 @@
 package me.ryandw11.timemanager.mainscreen.menu;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import com.sun.glass.events.KeyEvent;
 
+import me.ryandw11.rsql.RSQL;
+import me.ryandw11.rsql.properties.RProperties;
+import me.ryandw11.rsql.properties.subproperties.SQLProperties;
+import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.mainscreen.MainScreen;
+import me.ryandw11.timemanager.orm.Student;
+import me.ryandw11.timemanager.studentmenu.AddStudent;
 
 public class MenuManager extends JMenuBar{
 	
@@ -78,6 +89,22 @@ public class MenuManager extends JMenuBar{
 		file.setMnemonic(KeyEvent.VK_F);
 		JMenuItem save = new JMenuItem("Save...");
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		save.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(Main.listofStudents.size() == 0) return;
+				RProperties rp = new SQLProperties().setName("data" + File.separator + Main.currentWorkspace.name);
+				RSQL rsql = new RSQL(rp);
+				List<Object> output = new ArrayList<>();
+				for(Student s : Main.listofStudents) {
+					output.add(s);
+				}
+				rsql.process(output);
+				JOptionPane.showMessageDialog(null, "Successfully saved the " + Main.currentWorkspace.name + " worksapce!", "Saved Workspace", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+		});
 		file.add(save);
 		JMenuItem newFile = new JMenuItem("New Workspace");
 		newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
@@ -87,6 +114,16 @@ public class MenuManager extends JMenuBar{
 		edit = new JMenu("Edit");
 		edit.setMnemonic(KeyEvent.VK_E);
 		JMenuItem addStudent = new JMenuItem("Add Student");
+		addStudent.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				AddStudent as = new AddStudent();
+				as.show();
+				
+			}
+			
+		});
 		edit.add(addStudent);
 		if(ms.selectedStudents.size() == 1) {
 			JMenuItem editStudent = new JMenuItem("Edit Student");

@@ -1,10 +1,15 @@
 package me.ryandw11.timemanager.mainscreen;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
+import me.ryandw11.rsql.RSQL;
+import me.ryandw11.rsql.properties.RProperties;
+import me.ryandw11.rsql.properties.subproperties.JSONProperties;
+import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.orm.Student;
 
@@ -25,24 +30,28 @@ public class StudentDataHandler {
 	 */
 	public String getData(){
 		List<List<Object>> output = new ArrayList<>();
+		
+//		Main.listofStudents = new ArrayList<>();
+		if(Main.listofStudents == null) Main.listofStudents = new ArrayList<>();
 		// Testing
-		List<Student> students = new ArrayList<>();
-		Student st1 = new Student();
-		st1.name = "yeet";
-		st1.grade = 20;
-		st1.clazz = "Cool Class";
-		st1.totalHours = 25.3d;
-		Student st2 = new Student();
-		st2.name = "Student 2";
-		st2.grade = 90;
-		st2.clazz = "Awe Class";
-		st2.totalHours = 235.3d;
-		students.add(st1);
-		students.add(st2);
-		Main.listofStudents = students;
+		
+//		Student st1 = new Student();
+//		st1.name = "yeet";
+//		st1.grade = 20;
+//		st1.clazz = "Cool Class";
+//		st1.totalHours = 25.3d;
+//		Student st2 = new Student();
+//		st2.name = "Student 2";
+//		st2.grade = 90;
+//		st2.clazz = "Awe Class";
+//		st2.totalHours = 235.3d;
+//		students.add(st1);
+//		students.add(st2);
+//		Main.listofStudents = students;
 		//End Testing
 		Gson gson = new Gson();
 		for(Student s : Main.listofStudents) {
+			System.out.println(s.name);
 			List<Object> stu = new ArrayList<>();
 			stu.add(s.name);
 			stu.add(s.grade);

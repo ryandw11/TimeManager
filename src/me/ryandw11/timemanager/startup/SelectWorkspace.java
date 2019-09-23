@@ -21,8 +21,13 @@ import javax.swing.SwingConstants;
 import me.ryandw11.rsql.RSQL;
 import me.ryandw11.rsql.properties.RProperties;
 import me.ryandw11.rsql.properties.subproperties.JSONProperties;
+import me.ryandw11.rsql.properties.subproperties.SQLProperties;
+import me.ryandw11.timemanager.Main;
+import me.ryandw11.timemanager.mainscreen.MainScreen;
+import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.orm.Workspace;
 import me.ryandw11.timemanager.orm.Workspaces;
+import me.ryandw11.timemanager.utils.Utils;
 
 public class SelectWorkspace {
 	
@@ -41,14 +46,7 @@ public class SelectWorkspace {
 		JLabel title = new JLabel("Welcome Back!", SwingConstants.CENTER);
 		title.setFont(new Font("Welcome Back!", Font.PLAIN, 30));
 		
-//		JLabel text = new JLabel("Welcome Back to Time Manager! Please select the workspace you want to open.", SwingConstants.CENTER);
-		JLabel text = new JLabel("<html><body><form>\r\n" + 
-				"  First name:<br>\r\n" + 
-				"  <input type=\"text\" name=\"firstname\"><br>\r\n" + 
-				"  Last name:<br>\r\n" + 
-				"  <input type=\"text\" name=\"lastname\">\r\n" + 
-				"</form></body></html>", SwingConstants.CENTER);
-
+		JLabel text = new JLabel("Welcome Back to Time Manager! Please select the workspace you want to open.", SwingConstants.CENTER);
 		
 		List<String> choices = calculateChoices();
 		
@@ -69,23 +67,39 @@ public class SelectWorkspace {
 				
 				RProperties rp = new JSONProperties().setFile("data" + File.separator + "workspaces.json");
 				RSQL rsql = new RSQL(rp);
-				String name = "yeet";
-				Workspace wp = new Workspace();
-				wp.name = name;
-				List<String> classes = new ArrayList<String>();
-//				classes.add("none");
-				wp.classes = classes;
-				Workspaces wps = new Workspaces();
-				wps.lastWorkspace = name;
-				List<String> workspaces = new ArrayList<String>();
-				workspaces.add(name);
-				wps.workspaces = workspaces;
 				
-				rsql.process(Arrays.asList(wp));
-				rsql.process(Arrays.asList(wps));
+				Workspaces obj = (Workspaces) rsql.get(Workspaces.class).get(0);
+				List<Workspace> wsps = Utils.getWorkspaces(rsql.get(Workspace.class));
+				
+				Workspace foundSpace = null;
+				
+				for(Workspace w : wsps) {
+					if(w.name.equals(cb.getSelectedItem().toString())) {
+						foundSpace = w;
+						break;
+					}
+				}
+				
+				Main.currentWorkspace = foundSpace;
+				obj.lastWorkspace = foundSpace.name;
+				
+				rsql.process(Arrays.asList(obj));
 				
 				frame.dispose();
 				
+				RProperties srp = new SQLProperties().setName("data" + File.separator + Main.currentWorkspace.name);
+				RSQL srsql = new RSQL(srp);
+				List<Student> students = new ArrayList<>();
+				if(srsql.exists() && srsql.exists(Student.class)) {
+					List<Object> objs = srsql.get(Student.class);
+					for(Object o : objs) {
+						students.add((Student) o);
+					}
+				}
+				Main.listofStudents = students;
+				
+				MainScreen ms = new MainScreen();
+				Main.currentInstanceofMainScreen = ms;
 			}
 			
 		});
@@ -119,7 +133,7 @@ public class SelectWorkspace {
 		for(String s : wps.workspaces) {
 			if(s.equals(wps.lastWorkspace)) continue;
 			else output.add(s);
-		}
+		}		
 		
 		return output;
 	}

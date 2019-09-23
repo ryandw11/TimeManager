@@ -18,7 +18,7 @@ public class Student {
 	@Column
 	public double totalHours;
 	@Column
-	List<String> hours;
+	public List<String> hourIDs;
 	
 	public void setUp(int id, String name, int grade, String clazz, double total, List<String> hours) {
 		this.id = id;
@@ -26,7 +26,7 @@ public class Student {
 		this.grade = grade;
 		this.clazz = clazz;
 		this.totalHours = total;
-		this.hours = hours;
+		this.hourIDs = hours;
 	}
 
 }

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -29,11 +32,19 @@ import javax.swing.event.DocumentListener;
 import org.apache.poi.xssf.usermodel.TextAlign;
 import org.apache.xmlbeans.impl.jam.JField;
 
+import com.thizzer.jtouchbar.JTouchBar;
+import com.thizzer.jtouchbar.item.TouchBarItem;
+import com.thizzer.jtouchbar.item.view.TouchBarButton;
+import com.thizzer.jtouchbar.item.view.TouchBarTextField;
+import com.thizzer.jtouchbar.item.view.TouchBarView;
+import com.thizzer.jtouchbar.item.view.action.TouchBarViewAction;
+
 import me.ryandw11.jtml.JTML;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.mainscreen.menu.MenuManager;
 import me.ryandw11.timemanager.mainscreen.menu.SortManager;
 import me.ryandw11.timemanager.orm.Student;
+import me.ryandw11.timemanager.studentmenu.AddStudent;
 
 /**
  * The mainscreen of the program.
@@ -51,7 +62,7 @@ public class MainScreen {
 	public MainScreen() {
 		JFrame frame = new JFrame();
 		selectedStudents = new ArrayList<>();
-//		frame.setTitle("TimeManager | " + Main.currentWorkspace.name + " Workspace");
+		frame.setTitle("TimeManager | " + Main.currentWorkspace.name + " Workspace");
 		
 		JPanel rightButtons = new JPanel();
 		JPanel leftButtons = new JPanel();
@@ -62,6 +73,9 @@ public class MainScreen {
 		frame.setResizable(true);
 		frame.setBackground(Color.white);
 		
+		JTouchBar jTouchBar = new JTouchBar();
+		jTouchBar.setCustomizationIdentifier("MySwingJavaTouchBar");
+		
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		String is = classloader.getResource("students.html").toExternalForm();
 		Map<String, Object> jsmap = new HashMap<>();
@@ -71,7 +85,6 @@ public class MainScreen {
 		MainScreen.jtml = jtml;
 		
 		makeRightButtons(rightButtons);
-//		makeSort(leftButtons);
 		leftButtons.add(new SortManager(MainScreen.jtml));
 		
 		frame.add(rightButtons, BorderLayout.EAST);
@@ -82,67 +95,19 @@ public class MainScreen {
 		frame.setJMenuBar(this.menubar);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		
 		frame.setVisible(true);
 		this.frame = frame;
 		this.rightButtons = rightButtons;
 	}
 	
-	protected void makeSort(JPanel pnl) {
-//		Border bb = BorderFactory.createLineBorder(Color.black);
-//		TitledBorder tt = BorderFactory.createTitledBorder(bb, "Sort Students");
-//		JPanel jp = new JPanel();
-//		jp.setLayout(new BorderLayout());
-//		jp.setBorder(tt);
-//		
-//		JPanel clasz = new JPanel();
-//		JLabel byClass = new JLabel("By Class:");
-//		List<String> choices = new ArrayList<>();	//TODO Get classes
-//		choices.add("None");
-//		choices.add("Example Two");
-//		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
-//		clasz.add(byClass);
-//		clasz.add(cb);
-//		jp.add(clasz, BorderLayout.NORTH);
-//		
-//		JPanel grade = new JPanel();
-//		JLabel byGrade = new JLabel("By Grade:");
-//		SpinnerModel sm = new SpinnerNumberModel(1, 1, 12, 1);
-//		JSpinner js = new JSpinner(sm);
-//		grade.add(byGrade);
-//		grade.add(js);
-//		jp.add(grade, BorderLayout.CENTER);
-//		
-//		JPanel name = new JPanel();
-//		JLabel byName = new JLabel("By Name:");
-//		JTextField ji = new JTextField();
-//		ji.setColumns(10);
-//		ji.getDocument().addDocumentListener(new DocumentListener() {
-//
-//			@Override
-//			public void changedUpdate(DocumentEvent arg0) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void insertUpdate(DocumentEvent e) {
-//				System.out.println("sort('" + ji.getText() + "', null, null, null, null)");
-//				jtml.executeJavaScript("sort('" + ji.getText() + "', null, null, null, null)");
-//				
-//			}
-//
-//			@Override
-//			public void removeUpdate(DocumentEvent arg0) {
-//				jtml.executeJavaScript("sort('" + ji.getText() + "', null, null, null, null)");
-//			}
-//			
-//		});
-//		name.add(byName);
-//		name.add(ji);
-//		jp.add(name, BorderLayout.SOUTH);
-//		
-//		pnl.add(jp);
-		
+	public void updateStudentData() {
+		this.selectedStudents = new ArrayList<>();
+		this.jtml.executeJavaScript("loadData()");
+	}
+	
+	public void close() {
+		this.frame.dispose();
 	}
 	
 	public void updateSelect() {
@@ -188,6 +153,15 @@ public class MainScreen {
 		none.setLayout(new BorderLayout());
 		none.setBorder(tt);
 		JButton student = new JButton("Add Student");
+		student.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				AddStudent as = new AddStudent();
+				as.show();
+			}
+			
+		});
 		none.add(student, BorderLayout.SOUTH);
 		return none;
 	}
@@ -199,6 +173,24 @@ public class MainScreen {
 		JPanel pp = new JPanel();
 		JButton addhour = new JButton("Add Hours");
 		JButton delete = new JButton("Delete Student");
+		MainScreen inst = this;
+		delete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int n = JOptionPane.showOptionDialog(frame, "Are you sure you want to delete this student?", "Delete Student", JOptionPane.YES_NO_OPTION,
+					    JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if(n == 0) {
+					Main.listofStudents.remove(inst.selectedStudents.get(0));
+					inst.selectedStudents.remove(0);
+					inst.updateSelect();
+					inst.updateStudentData();
+				}
+				
+			}
+			
+		});
 		one.setLayout(new BorderLayout());
 //		JPanel edp = new JPanel();
 //		edp.add(edit);
@@ -229,6 +221,25 @@ public class MainScreen {
 		JPanel pp = new JPanel();
 		JButton addhour = new JButton("Add Hours");
 		JButton delete = new JButton("Delete Students");
+		MainScreen inst = this;
+		delete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				int n = JOptionPane.showOptionDialog(frame, "Are you sure you want to delete the selected students?", "Delete Students", JOptionPane.YES_NO_OPTION,
+					    JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if(n == 0) {
+					for(Student stu : inst.selectedStudents) {
+						Main.listofStudents.remove(stu);
+					}
+					inst.selectedStudents = new ArrayList<>();
+					inst.updateSelect();
+					inst.updateStudentData();
+				}
+				
+			}
+			
+		});
 		one.setLayout(new BorderLayout());
 //		JPanel edp = new JPanel();
 //		edp.add(edit);
