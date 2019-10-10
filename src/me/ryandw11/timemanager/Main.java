@@ -17,7 +17,6 @@ public class Main {
 	
 	public static Workspace currentWorkspace;
 	public static List<Student> listofStudents;
-	public static int currentId;
 	public static MainScreen currentInstanceofMainScreen;
 
 	public static void main(String[] args) {

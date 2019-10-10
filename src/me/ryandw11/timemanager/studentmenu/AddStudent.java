@@ -2,7 +2,6 @@ package me.ryandw11.timemanager.studentmenu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import me.ryandw11.timemanager.Main;
-import me.ryandw11.timemanager.mainscreen.MainScreen;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.utils.Utils;
 
@@ -31,12 +29,10 @@ public class AddStudent {
 	public AddStudent() {
 		JFrame frame = new JFrame();
 		frame.setTitle("Time Manager | Add Student");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(500, 230);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		
-		JPanel pnl = new JPanel();
 		
 		JPanel namePnl = new JPanel();
 		JLabel nameLbl = new JLabel("Name: ");
@@ -53,7 +49,7 @@ public class AddStudent {
 		gradePnl.add(grade);
 		
 		List<String> choices = new ArrayList<>();	//TODO Get classes
-//		choices.addAll(Main.currentWorkspace.classes);
+		choices.addAll(Main.currentWorkspace.classes);
 		boolean isDisabled = false;
 		if(choices.size() < 1) {
 			choices.add("None");
@@ -119,8 +115,8 @@ public class AddStudent {
 					error.setText("");
 				}
 				Student stu = new Student();
-				Main.currentId += 1;
-				stu.setUp(Main.currentId, jtf.getText(), (int) grade.getValue(), (String) cb.getSelectedItem(), 0, new ArrayList<String>());
+				Main.currentWorkspace.currentStudentId += 1;
+				stu.setUp(Main.currentWorkspace.currentStudentId, jtf.getText(), (int) grade.getValue(), (String) cb.getSelectedItem(), 0, new ArrayList<String>());
 				Main.listofStudents.add(stu);
 				Main.currentInstanceofMainScreen.updateStudentData();
 				frame.dispose();

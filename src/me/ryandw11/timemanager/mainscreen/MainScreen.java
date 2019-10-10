@@ -41,6 +41,8 @@ import com.thizzer.jtouchbar.item.view.action.TouchBarViewAction;
 
 import me.ryandw11.jtml.JTML;
 import me.ryandw11.timemanager.Main;
+import me.ryandw11.timemanager.classes.AddClass;
+import me.ryandw11.timemanager.classes.RemoveClass;
 import me.ryandw11.timemanager.mainscreen.menu.MenuManager;
 import me.ryandw11.timemanager.mainscreen.menu.SortManager;
 import me.ryandw11.timemanager.orm.Student;
@@ -58,6 +60,7 @@ public class MainScreen {
 	public List<Student> selectedStudents;
 	public MenuManager menubar;
 	private JPanel rightButtons;
+	private SortManager sortMgr;
 	
 	public MainScreen() {
 		JFrame frame = new JFrame();
@@ -85,7 +88,9 @@ public class MainScreen {
 		MainScreen.jtml = jtml;
 		
 		makeRightButtons(rightButtons);
-		leftButtons.add(new SortManager(MainScreen.jtml));
+		SortManager mgr = new SortManager(MainScreen.jtml);
+		leftButtons.add(mgr);
+		this.sortMgr = mgr;
 		
 		frame.add(rightButtons, BorderLayout.EAST);
 		frame.add(leftButtons, BorderLayout.WEST);
@@ -99,6 +104,10 @@ public class MainScreen {
 		frame.setVisible(true);
 		this.frame = frame;
 		this.rightButtons = rightButtons;
+	}
+	
+	public void updateSort() {
+		this.sortMgr.updateSort();
 	}
 	
 	public void updateStudentData() {
@@ -140,7 +149,25 @@ public class MainScreen {
 		JPanel jpn = new JPanel();
 		jpn.setBorder(tt);
 		JButton btn = new JButton("Add Class");
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				AddClass ac = new AddClass();
+				ac.show();
+			}
+			
+		});
 		JButton rmv = new JButton("Remove Class");
+		rmv.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				RemoveClass rvc = new RemoveClass();
+				rvc.show();
+			}
+			
+		});
 		jpn.add(btn);
 		jpn.add(rmv);
 		return jpn;
@@ -173,6 +200,7 @@ public class MainScreen {
 		JPanel pp = new JPanel();
 		JButton addhour = new JButton("Add Hours");
 		JButton delete = new JButton("Delete Student");
+		JButton viewHours = new JButton("View Hours");
 		MainScreen inst = this;
 		delete.addActionListener(new ActionListener() {
 
@@ -197,8 +225,11 @@ public class MainScreen {
 //		pp.add(edp);
 		pp.add(addhour);
 		pp.add(delete);
+		JPanel pnl = new JPanel();
+		pnl.add(viewHours);
 		one.add(edit, BorderLayout.NORTH);
 		one.add(pp, BorderLayout.CENTER);
+		one.add(pnl, BorderLayout.SOUTH);
 		Border bb = BorderFactory.createLineBorder(Color.black);
 		TitledBorder tt = BorderFactory.createTitledBorder(bb, "Manage Student");
 		JPanel finalP = new JPanel();

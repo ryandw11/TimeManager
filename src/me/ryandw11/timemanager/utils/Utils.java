@@ -23,5 +23,9 @@ public class Utils {
 		}
 		return false;
 	}
+	
+	public static boolean classNameExists(String name) {
+		return Main.currentWorkspace.classes.contains(name);
+	}
 
 }

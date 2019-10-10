@@ -38,6 +38,7 @@ var selectedStudents = [];
 // window.addEventListener("load", loadData);
 
 function loadData() {
+    selectedStudents = [];
     var student = studentData.getData();
     students = getListOfStudents(JSON.parse(student));
     displayTable(getListOfStudents(JSON.parse(student)));
@@ -87,9 +88,10 @@ function displayTable(std) {
         for (var x = 0; x < 5; x++) {
             var tableData = document.createElement("td");
             if (x == 0) {
-                tableData.innerHTML = `<input type="checkbox" name="${students.indexOf(std[i])}" id="${students.indexOf(std[i])}">`;
+                tableData.innerHTML = `<input type="checkbox" name="${findIndex(std[i])}" id="${findIndex(std[i])}">`;
                 var input = tableData.childNodes[0];
                 input.addEventListener("change", onChange);
+                studentData.logData(findIndex(std[i]));
             } else if (x == 1) {
                 tableData.textContent = std[i].getName();
             } else if (x == 2) {
@@ -117,6 +119,13 @@ function displayTable(std) {
     }
 }
 
+function findIndex(stu) {
+    for (var i in students) {
+        if (JSON.stringify(students[i]) == JSON.stringify(stu)) return i;
+    }
+    return -1;
+}
+
 function onChange(e) {
     var target = e.target;
     if (e.target.checked) {
@@ -130,6 +139,7 @@ function onChange(e) {
 
 function sort(name, clazz, grade, hour1, hour2) {
     let newList = sortData(name, clazz, grade, hour1, hour2);
+    selectedStudents = [];
     displayTable(newList);
 }
 
@@ -156,7 +166,7 @@ function sortData(name, clazz, grade, hour1, hour2) {
     if (grade != 0 && grade != null) {
         const tempData = storedData.slice(0);
         for (let i in tempData) {
-            if (tempData[i].getGrade() !== grade) {
+            if (tempData[i].getGrade() != grade) {
                 storedData.splice(storedData.indexOf(tempData[i]), 1);
             }
         }

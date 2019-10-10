@@ -13,4 +13,10 @@ public class Workspace {
 	
 	@Column
 	public List<String> classes;
+	
+	@Column
+	public int currentStudentId;
+	
+	@Column
+	public int currentHourId;
 }

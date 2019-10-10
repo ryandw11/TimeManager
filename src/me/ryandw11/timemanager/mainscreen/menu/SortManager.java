@@ -76,10 +76,11 @@ public class SortManager extends JPanel {
 		JPanel clasz = new JPanel();
 		JLabel byClass = new JLabel("By Class:");
 		List<String> choices = new ArrayList<>();	//TODO Get classes
+		choices.add("None");
 		choices.addAll(Main.currentWorkspace.classes);
 		boolean isDisabled = false;
-		if(choices.size() < 1) {
-			choices.add("None");
+		if(choices.size() < 2) {
+//			choices.add("None");
 			isDisabled = true;
 		}
 		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
@@ -157,6 +158,19 @@ public class SortManager extends JPanel {
 		this.grade = js;
 		
 		this.jtml = jtml;
+	}
+	
+	public void updateSort() {
+		cb.removeAllItems();
+		List<String> choices = new ArrayList<>();	//TODO Get classes
+		choices.add("None");
+		choices.addAll(Main.currentWorkspace.classes);
+		boolean isDisabled = false;
+		if(choices.size() < 2) {
+			isDisabled = true;
+		}
+		choices.forEach(item -> cb.addItem(item));
+		cb.setEnabled(!isDisabled);
 	}
 	
 	public void proccessSort() {

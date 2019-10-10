@@ -18,6 +18,7 @@ import me.ryandw11.rsql.RSQL;
 import me.ryandw11.rsql.properties.RProperties;
 import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
+import me.ryandw11.timemanager.datahandler.DataHandler;
 import me.ryandw11.timemanager.mainscreen.MainScreen;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.studentmenu.AddStudent;
@@ -93,15 +94,16 @@ public class MenuManager extends JMenuBar{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(Main.listofStudents.size() == 0) return;
-				RProperties rp = new SQLProperties().setName("data" + File.separator + Main.currentWorkspace.name);
-				RSQL rsql = new RSQL(rp);
-				List<Object> output = new ArrayList<>();
-				for(Student s : Main.listofStudents) {
-					output.add(s);
-				}
-				rsql.process(output);
-				JOptionPane.showMessageDialog(null, "Successfully saved the " + Main.currentWorkspace.name + " worksapce!", "Saved Workspace", JOptionPane.INFORMATION_MESSAGE);
+//				if(Main.listofStudents.size() == 0) return;
+//				RProperties rp = new SQLProperties().setName("data" + File.separator + Main.currentWorkspace.name);
+//				RSQL rsql = new RSQL(rp);
+//				List<Object> output = new ArrayList<>();
+//				for(Student s : Main.listofStudents) {
+//					output.add(s);
+//				}
+//				rsql.process(output);
+//				JOptionPane.showMessageDialog(null, "Successfully saved the " + Main.currentWorkspace.name + " worksapce!", "Saved Workspace", JOptionPane.INFORMATION_MESSAGE);
+				DataHandler.save();
 			}
 			
 		});

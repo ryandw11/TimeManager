@@ -178,6 +178,9 @@ public class FirstTime {
 				wp.name = name;
 				List<String> classes = new ArrayList<String>();
 				wp.classes = classes;
+				wp.currentHourId = 0;
+				wp.currentStudentId = 0;
+				
 				Workspaces wps = new Workspaces();
 				wps.lastWorkspace = name;
 				List<String> workspaces = new ArrayList<String>();
