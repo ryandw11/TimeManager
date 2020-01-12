@@ -47,6 +47,7 @@ import me.ryandw11.timemanager.mainscreen.menu.MenuManager;
 import me.ryandw11.timemanager.mainscreen.menu.SortManager;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.studentmenu.AddHours;
+import me.ryandw11.timemanager.studentmenu.AddHoursStudents;
 import me.ryandw11.timemanager.studentmenu.AddStudent;
 import me.ryandw11.timemanager.studentmenu.EditStudent;
 import me.ryandw11.timemanager.studentmenu.ViewStudent;
@@ -78,6 +79,7 @@ public class MainScreen {
 		frame.setMinimumSize(new Dimension(1200, 800));
 		frame.setResizable(true);
 		frame.setBackground(Color.white);
+		frame.setLocationRelativeTo(null);
 		
 		JTouchBar jTouchBar = new JTouchBar();
 		jTouchBar.setCustomizationIdentifier("MySwingJavaTouchBar");
@@ -286,6 +288,15 @@ public class MainScreen {
 //		one.setBorder(tt);
 		JPanel pp = new JPanel();
 		JButton addhour = new JButton("Add Hours");
+		addhour.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				AddHoursStudents ahs = new AddHoursStudents();
+				ahs.show();
+			}
+			
+		});
 		JButton delete = new JButton("Delete Students");
 		MainScreen inst = this;
 		delete.addActionListener(new ActionListener() {

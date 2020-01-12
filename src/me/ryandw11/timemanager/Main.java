@@ -26,9 +26,6 @@ public class Main {
 		if(rsql.exists()) {
 			SelectWorkspace sw = new SelectWorkspace();
 			sw.show();
-//			AddHours ah = new AddHours(new Student());
-//			ah.show();
-
 		}else {
 			FirstTime ft = new FirstTime();
 			ft.show();

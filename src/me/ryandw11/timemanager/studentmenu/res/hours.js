@@ -79,8 +79,8 @@ function displayTable(std) {
                 anchor.addEventListener("click", e => {
                     hourData.onViewMore(JSON.stringify(e.target.dataset.id));
                 });
-                anchor.textContent = "View More";
-                anchor.dataset.id = i;
+                anchor.textContent = "Delete";
+                anchor.dataset.id = std[i].getId();
                 tableData.appendChild(anchor);
             }
             tableRow.appendChild(tableData);
@@ -90,11 +90,9 @@ function displayTable(std) {
     if (std.length < 1) {
         var row = document.createElement("tr");
         row.appendChild(document.createElement("td"));
-        row.appendChild(document.createElement("td"));
         var text = document.createElement("td");
         text.textContent = "No Hours Found";
         row.appendChild(text);
-        row.appendChild(document.createElement("td"));
         row.appendChild(document.createElement("td"));
         row.style.backgroundColor = "white";
         table.appendChild(row);

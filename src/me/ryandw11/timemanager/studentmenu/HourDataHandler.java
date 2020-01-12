@@ -1,18 +1,12 @@
 package me.ryandw11.timemanager.studentmenu;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
-import me.ryandw11.rsql.RSQL;
-import me.ryandw11.rsql.properties.RProperties;
-import me.ryandw11.rsql.properties.subproperties.JSONProperties;
-import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.orm.Hour;
-import me.ryandw11.timemanager.orm.Student;
 
 /**
  * Handles the interaction between the MainScreen class and the javascript.
@@ -34,11 +28,18 @@ public class HourDataHandler {
 		if(Main.listOfHours == null) Main.listOfHours = new ArrayList<>();
 		//End Testing
 		Gson gson = new Gson();
-		for(Hour s : Main.listOfHours) {
+		for(String s : vs.student.hourIDs) {
+			Hour h;
+			try {
+				h = Main.listOfHours.get(Integer.valueOf(s));
+			}
+			catch(NumberFormatException ex) {
+				continue;
+			}
 			List<Object> hr = new ArrayList<>();
-			hr.add(s.id);
-			hr.add(s.time);
-			hr.add(s.description);
+			hr.add(h.id);
+			hr.add(h.time);
+			hr.add(h.description);
 			output.add(hr);
 		}
 		return gson.toJson(output);
@@ -47,6 +48,8 @@ public class HourDataHandler {
 	public void onViewMore(String json) {
 		Gson gson = new Gson();
 		int input = gson.fromJson(json, int.class);
+		DeleteHours dh = new DeleteHours(vs.student, input, vs);
+		dh.show();
 		System.out.println(input);
 	}
 	
