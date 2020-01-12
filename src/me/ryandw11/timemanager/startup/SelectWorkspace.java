@@ -24,6 +24,7 @@ import me.ryandw11.rsql.properties.subproperties.JSONProperties;
 import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.mainscreen.MainScreen;
+import me.ryandw11.timemanager.orm.Hour;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.orm.Workspace;
 import me.ryandw11.timemanager.orm.Workspaces;
@@ -98,6 +99,14 @@ public class SelectWorkspace {
 				}
 				Main.listofStudents = students;
 				
+				List<Hour> hours = new ArrayList<>();
+				if(srsql.exists() && srsql.exists(Hour.class)) {
+					List<Object> objs = srsql.get(Hour.class);
+					for(Object o : objs) {
+						hours.add((Hour) o);
+					}
+				}
+				Main.listOfHours = hours;
 				MainScreen ms = new MainScreen();
 				Main.currentInstanceofMainScreen = ms;
 			}

@@ -60,6 +60,10 @@
 				<directory>src/me/ryandw11/timemanager/mainscreen/res</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+				<directory>src/me/ryandw11/timemanager/studentmenu/res</directory>
+				<filtering>true</filtering>
+			</resource>
 		</resources>
 	</build>
 	<repositories>

@@ -3,12 +3,9 @@
     "Workspace": [
       {
         "name": "Test",
-        "classes": [
-          "Lol",
-          "Example"
-        ],
-        "currentStudentId": 9,
-        "currentHourId": 0
+        "classes": [],
+        "currentStudentId": 2,
+        "currentHourId": 3
       }
     ],
     "Workspaces": [

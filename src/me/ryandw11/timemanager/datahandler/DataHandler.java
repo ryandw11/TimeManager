@@ -11,6 +11,7 @@ import me.ryandw11.rsql.properties.RProperties;
 import me.ryandw11.rsql.properties.subproperties.JSONProperties;
 import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
+import me.ryandw11.timemanager.orm.Hour;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.orm.Workspace;
 
@@ -24,6 +25,17 @@ public class DataHandler {
 			output.add(s);
 		}
 		rsql.process(output);
+		
+		if(Main.listOfHours != null && Main.listOfHours.size() != 0) {
+			List<Object> hOutput = new ArrayList<>();
+			for(Hour h : Main.listOfHours) {
+				hOutput.add(h);
+			}
+			rsql.process(hOutput);
+		}
+		rsql.process(output);
+		
+		
 		RSQL workspacesR = new RSQL(new JSONProperties().setFile("data" + File.separator + "workspaces.json"));
 		List<Object> o = workspacesR.get(Workspace.class);
 		List<Object> outputs = new ArrayList<>();

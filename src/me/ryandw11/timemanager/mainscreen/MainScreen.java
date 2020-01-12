@@ -46,7 +46,10 @@ import me.ryandw11.timemanager.classes.RemoveClass;
 import me.ryandw11.timemanager.mainscreen.menu.MenuManager;
 import me.ryandw11.timemanager.mainscreen.menu.SortManager;
 import me.ryandw11.timemanager.orm.Student;
+import me.ryandw11.timemanager.studentmenu.AddHours;
 import me.ryandw11.timemanager.studentmenu.AddStudent;
+import me.ryandw11.timemanager.studentmenu.EditStudent;
+import me.ryandw11.timemanager.studentmenu.ViewStudent;
 
 /**
  * The mainscreen of the program.
@@ -185,6 +188,7 @@ public class MainScreen {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				AddStudent as = new AddStudent();
+				updateSelect();
 				as.show();
 			}
 			
@@ -197,10 +201,41 @@ public class MainScreen {
 		JPanel one = new JPanel();
 //		one.setBorder(tt);
 		JButton edit = new JButton("Edit Student");
+		edit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				EditStudent es = new EditStudent(selectedStudents.get(0));
+				selectedStudents.clear();
+				updateSelect();
+				es.show();
+				
+			}
+			
+		});
 		JPanel pp = new JPanel();
 		JButton addhour = new JButton("Add Hours");
+		addhour.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				AddHours ah = new AddHours(selectedStudents.get(0));
+				selectedStudents.clear();
+				updateSelect();
+				ah.show();
+			}
+			
+		});
 		JButton delete = new JButton("Delete Student");
 		JButton viewHours = new JButton("View Hours");
+		viewHours.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				ViewStudent vs = new ViewStudent(selectedStudents.get(0));
+			}
+			
+		});
 		MainScreen inst = this;
 		delete.addActionListener(new ActionListener() {
 

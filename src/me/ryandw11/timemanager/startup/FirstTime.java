@@ -196,6 +196,7 @@ public class FirstTime {
 				MainScreen ms = new MainScreen();
 				Main.currentInstanceofMainScreen = ms;
 				Main.listofStudents = new ArrayList<>();
+				Main.listOfHours = new ArrayList<>();
 				
 			}
 			

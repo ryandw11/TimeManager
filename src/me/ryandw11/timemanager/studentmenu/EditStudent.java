@@ -23,12 +23,17 @@ import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.utils.Utils;
 
-public class AddStudent {
+/**
+ * Student Edit Menu
+ * @author Ryandw11
+ *
+ */
+public class EditStudent {
 	private JFrame frame;
 	
-	public AddStudent() {
+	public EditStudent(Student stu) {
 		JFrame frame = new JFrame();
-		frame.setTitle("Time Manager | Add Student");
+		frame.setTitle("Time Manager | Edit Student");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(500, 230);
 		frame.setResizable(false);
@@ -38,6 +43,7 @@ public class AddStudent {
 		JLabel nameLbl = new JLabel("Name: ");
 		JTextField jtf = new JTextField();
 		jtf.setColumns(15);
+		jtf.setText(stu.name);
 		namePnl.add(nameLbl);
 		namePnl.add(jtf);
 		
@@ -45,22 +51,27 @@ public class AddStudent {
 		JLabel gradeLbl = new JLabel("Grade: ");
 		SpinnerModel gradeModel = new SpinnerNumberModel(1, 1, 12, 1);
 		JSpinner grade = new JSpinner(gradeModel);
+		grade.setValue(stu.grade);
 		gradePnl.add(gradeLbl);
 		gradePnl.add(grade);
 		
 		List<String> choices = new ArrayList<>();	//TODO Get classes
+		choices.add("None");
 		choices.addAll(Main.currentWorkspace.classes);
 		boolean isDisabled = false;
-		if(choices.size() < 1) {
-			choices.add("None");
+		if(choices.size() < 2) {
 			isDisabled = true;
 		}
 		JComboBox<String> cb = new JComboBox<String>(choices.toArray(new String[0]));
+		cb.setSelectedIndex(choices.indexOf(stu.clazz));
+		if(stu.clazz.equals("")) {
+			cb.setSelectedIndex(0);
+		}
 		if(isDisabled) cb.setEnabled(false);
 		
 		JPanel titleGrde = new JPanel();
 		JPanel nameGrade = new JPanel();
-		JLabel title = new JLabel("Add a Student", SwingConstants.CENTER);
+		JLabel title = new JLabel("Edit Student", SwingConstants.CENTER);
 		title.setFont(new Font("Welcome!", Font.PLAIN, 30));
 		titleGrde.setLayout(new BorderLayout());
 		titleGrde.add(title, BorderLayout.NORTH);
@@ -75,8 +86,19 @@ public class AddStudent {
 		classes.add(classLbl);
 		classes.add(cb);
 		JPanel submit = new JPanel();
-		JButton btn = new JButton("Add Student");
+		JButton btn = new JButton("Edit Student");
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				remove();
+			}
+			
+		});
 		submit.add(btn);
+		submit.add(cancel);
+		
 		
 		JPanel classSubmit = new JPanel();
 		classSubmit.setLayout(new BorderLayout());
@@ -102,7 +124,7 @@ public class AddStudent {
 					error.setForeground(Color.red);
 					return;
 				}
-				else if(Utils.studentNameExists(jtf.getText())) {
+				else if(!jtf.getText().equals(stu.name) && Utils.studentNameExists(jtf.getText())) {
 					jtf.setBackground(Color.red);
 					jtf.setForeground(Color.white);
 					error.setText("Error: That name already exists!");
@@ -114,16 +136,9 @@ public class AddStudent {
 					jtf.setForeground(Color.black);
 					error.setText("");
 				}
-				Student stu = new Student();
-				Main.currentWorkspace.currentStudentId += 1;
-				stu.setUp(Main.currentWorkspace.currentStudentId, jtf.getText(), (int) grade.getValue(), (String) cb.getSelectedItem(), 0, new ArrayList<String>());
-				Main.listofStudents.add(stu);
+				stu.setUp(stu.id, jtf.getText(), (int) grade.getValue(), (String) cb.getSelectedItem(), stu.totalHours, stu.hourIDs);
 				Main.currentInstanceofMainScreen.updateStudentData();
 				frame.dispose();
-//				Main.currentInstanceofMainScreen.close();
-//				frame.dispose();
-//				MainScreen ms = new MainScreen();
-//				Main.currentInstanceofMainScreen = ms;
 			}
 			
 		});

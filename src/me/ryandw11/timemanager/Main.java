@@ -7,16 +7,17 @@ import me.ryandw11.rsql.RSQL;
 import me.ryandw11.rsql.properties.RProperties;
 import me.ryandw11.rsql.properties.subproperties.JSONProperties;
 import me.ryandw11.timemanager.mainscreen.MainScreen;
+import me.ryandw11.timemanager.orm.Hour;
 import me.ryandw11.timemanager.orm.Student;
 import me.ryandw11.timemanager.orm.Workspace;
 import me.ryandw11.timemanager.startup.FirstTime;
 import me.ryandw11.timemanager.startup.SelectWorkspace;
-import me.ryandw11.timemanager.studentmenu.AddStudent;
 
 public class Main {
 	
 	public static Workspace currentWorkspace;
 	public static List<Student> listofStudents;
+	public static List<Hour> listOfHours;
 	public static MainScreen currentInstanceofMainScreen;
 
 	public static void main(String[] args) {
@@ -25,8 +26,8 @@ public class Main {
 		if(rsql.exists()) {
 			SelectWorkspace sw = new SelectWorkspace();
 			sw.show();
-//			AddStudent as = new AddStudent();
-//			as.show();
+//			AddHours ah = new AddHours(new Student());
+//			ah.show();
 
 		}else {
 			FirstTime ft = new FirstTime();
