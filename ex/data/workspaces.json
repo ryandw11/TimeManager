@@ -2,22 +2,22 @@
   "rsql": {
     "Workspace": [
       {
-        "name": "Example-Wokspace",
+        "name": "FBLA",
         "classes": [
           "First Hour",
           "Second Hour",
           "Third Hour"
         ],
-        "currentStudentId": 7,
-        "currentHourId": 0
+        "currentStudentId": 5,
+        "currentHourId": 3
       }
     ],
     "Workspaces": [
       {
         "workspaces": [
-          "Example-Wokspace"
+          "FBLA"
         ],
-        "lastWorkspace": "Example-Wokspace"
+        "lastWorkspace": "FBLA"
       }
     ]
   }

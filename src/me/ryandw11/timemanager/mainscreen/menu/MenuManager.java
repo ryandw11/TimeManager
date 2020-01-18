@@ -16,12 +16,18 @@ import com.sun.glass.events.KeyEvent;
 
 import me.ryandw11.rsql.RSQL;
 import me.ryandw11.rsql.properties.RProperties;
+import me.ryandw11.rsql.properties.subproperties.ExcelProperties;
 import me.ryandw11.rsql.properties.subproperties.SQLProperties;
 import me.ryandw11.timemanager.Main;
 import me.ryandw11.timemanager.datahandler.DataHandler;
 import me.ryandw11.timemanager.mainscreen.MainScreen;
+import me.ryandw11.timemanager.orm.ExportStudent;
+import me.ryandw11.timemanager.orm.Hour;
 import me.ryandw11.timemanager.orm.Student;
+import me.ryandw11.timemanager.studentmenu.AddHours;
+import me.ryandw11.timemanager.studentmenu.AddHoursStudents;
 import me.ryandw11.timemanager.studentmenu.AddStudent;
+import me.ryandw11.timemanager.studentmenu.EditStudent;
 
 public class MenuManager extends JMenuBar{
 	
@@ -40,25 +46,117 @@ public class MenuManager extends JMenuBar{
 	public void update() {
 		edit.removeAll();
 		JMenuItem addStudent = new JMenuItem("Add Student");
+		addStudent.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddStudent as = new AddStudent();
+				ms.updateSelect();
+				as.show();	
+			}
+			
+		});
 		edit.add(addStudent);
 		if(ms.selectedStudents.size() == 1) {
 			JMenuItem editStudent = new JMenuItem("Edit Student");
+			editStudent.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					EditStudent es = new EditStudent(ms.selectedStudents.get(0));
+					ms.selectedStudents.clear();
+					ms.updateSelect();
+					es.show();
+					
+				}
+				
+			});
 			edit.add(editStudent);
 			JMenuItem addHours = new JMenuItem("Add Hours to Student");
+			addHours.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddHours ah = new AddHours(ms.selectedStudents.get(0));
+					ms.selectedStudents.clear();
+					ms.updateSelect();
+					ah.show();
+				}
+				
+			});
 			edit.add(addHours);
 			JMenuItem deleteStudent = new JMenuItem("Delete Student");
+			deleteStudent.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int n = JOptionPane.showOptionDialog(ms.frame, "Are you sure you want to delete this student?", "Delete Student", JOptionPane.YES_NO_OPTION,
+						    JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if(n == 0) {
+						Main.listofStudents.remove(ms.selectedStudents.get(0));
+						ms.selectedStudents.remove(0);
+						ms.updateSelect();
+						ms.updateStudentData();
+					}
+				}
+				
+			});
 			edit.add(deleteStudent);
 		}
 		else if(ms.selectedStudents.size() > 1) {
 			JMenuItem addHours = new JMenuItem("Add Hours to Students");
+			addHours.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					AddHoursStudents ahs = new AddHoursStudents(ms.selectedStudents);
+					ahs.show();
+				}
+				
+			});
 			edit.add(addHours);
 			JMenuItem deleteStudent = new JMenuItem("Delete Students");
+			deleteStudent.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int n = JOptionPane.showOptionDialog(ms.frame, "Are you sure you want to delete the selected students?", "Delete Students", JOptionPane.YES_NO_OPTION,
+						    JOptionPane.QUESTION_MESSAGE, null, null, null);
+					if(n == 0) {
+						for(Student stu : ms.selectedStudents) {
+							Main.listofStudents.remove(stu);
+						}
+						ms.selectedStudents = new ArrayList<>();
+						ms.updateSelect();
+						ms.updateStudentData();
+					}
+				}
+				
+			});
 			edit.add(deleteStudent);
 		}
 		
 		export.removeAll();
 		if(ms.selectedStudents.size() == 1) {
 			JMenuItem exportStudent = new JMenuItem("Export Student");
+			exportStudent.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					RSQL export = new RSQL(new ExcelProperties().setFile("exports" + File.separatorChar + "Test"));
+					List<Object> es = new ArrayList<>();
+					ExportStudent exs = new ExportStudent();
+					exs.setUp(ms.selectedStudents.get(0));
+					es.add(exs);
+					export.process(es);
+					List<Object> hours = new ArrayList<>();
+					for(Hour h : Main.listOfHours) {
+						hours.add(h);
+					}
+					export.process(hours);
+				}
+				
+			});
 			export.add(exportStudent);
 		}
 		else if(ms.selectedStudents.size() > 1) {
@@ -70,17 +168,17 @@ public class MenuManager extends JMenuBar{
 		}
 		
 		print.removeAll();
-		if(ms.selectedStudents.size() == 1) {
-			JMenuItem printStudent = new JMenuItem("Print Student");
-			print.add(printStudent);
-		}
-		else if(ms.selectedStudents.size() > 1) {
-			JMenuItem exportStudent = new JMenuItem("Print Selected Students");
-			print.add(exportStudent);
-		}else {
-			JMenuItem exportStudent = new JMenuItem("Print Students");
-			print.add(exportStudent);
-		}
+//		if(ms.selectedStudents.size() == 1) {
+//			JMenuItem printStudent = new JMenuItem("Print Student");
+//			print.add(printStudent);
+//		}
+//		else if(ms.selectedStudents.size() > 1) {
+//			JMenuItem exportStudent = new JMenuItem("Print Selected Students");
+//			print.add(exportStudent);
+//		}else {
+//			JMenuItem exportStudent = new JMenuItem("Print Students");
+//			print.add(exportStudent);
+//		}
 	}
 	
 	
@@ -94,15 +192,6 @@ public class MenuManager extends JMenuBar{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				if(Main.listofStudents.size() == 0) return;
-//				RProperties rp = new SQLProperties().setName("data" + File.separator + Main.currentWorkspace.name);
-//				RSQL rsql = new RSQL(rp);
-//				List<Object> output = new ArrayList<>();
-//				for(Student s : Main.listofStudents) {
-//					output.add(s);
-//				}
-//				rsql.process(output);
-//				JOptionPane.showMessageDialog(null, "Successfully saved the " + Main.currentWorkspace.name + " worksapce!", "Saved Workspace", JOptionPane.INFORMATION_MESSAGE);
 				DataHandler.save();
 			}
 			
@@ -183,7 +272,7 @@ public class MenuManager extends JMenuBar{
 			JMenuItem exportStudent = new JMenuItem("Print Students");
 			print.add(exportStudent);
 		}
-		add(print);
+//		add(print);
 	}
 
 }

@@ -292,7 +292,7 @@ public class MainScreen {
 
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				AddHoursStudents ahs = new AddHoursStudents();
+				AddHoursStudents ahs = new AddHoursStudents(selectedStudents);
 				ahs.show();
 			}
 			

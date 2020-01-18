@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +23,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import me.ryandw11.jtml.JTML;
-import me.ryandw11.rsql.RSQL;
-import me.ryandw11.rsql.properties.RProperties;
-import me.ryandw11.rsql.properties.subproperties.JSONProperties;
 import me.ryandw11.timemanager.Main;
-import me.ryandw11.timemanager.orm.Workspace;
 
 public class SortManager extends JPanel {
 	
@@ -177,8 +172,8 @@ public class SortManager extends JPanel {
 		String param1 = "'" + jt.getText() + "'";
 		String param2 = "'" + cb.getItemAt(cb.getSelectedIndex()) + "'";
 		String param3 = "'" + grade.getValue().toString() + "'";
-		String param4 = "'" + h1.getValue().toString() + "'";
-		String param5 = "'" + h2.getValue().toString() + "'";
+		String param4 = "'" + h2.getValue().toString() + "'";
+		String param5 = "'" + h1.getValue().toString() + "'";
 		
 //		if(param1.replace("'", "").equals("")) param1 = "null";
 		if(param2.replace("'", "").equals("None") || param2.replace("'", "").equals("Select A Class")) param2 = "null";

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +24,7 @@ import me.ryandw11.timemanager.utils.Utils;
 public class AddHoursStudents {
 	private JFrame frame;
 	
-	public AddHoursStudents() {
+	public AddHoursStudents(List<Student> selectedStudents) {
 		JFrame frame = new JFrame();
 		frame.setTitle("Time Manager | Add Hours to Multiple Students");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -63,7 +64,7 @@ public class AddHoursStudents {
 				Hour hr = new Hour();
 				hr.setUp(Main.currentWorkspace.currentHourId, (double) hours.getValue(), actDesc.getText());
 				Main.listOfHours.add(hr);
-				for(Student stu : Main.listofStudents) {
+				for(Student stu : selectedStudents) {
 					stu.hourIDs.add(String.valueOf(Main.currentWorkspace.currentHourId));
 					stu.totalHours = Utils.addUpHours(stu);
 				}

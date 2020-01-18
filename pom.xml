@@ -43,6 +43,9 @@
 						<manifest>
 							<mainClass>me.ryandw11.timemanager.Main</mainClass>
 						</manifest>
+						<manifestEntries>
+                    		<Class-Path>.</Class-Path>
+                		</manifestEntries>
 					</archive>
 				</configuration>
 				<executions>
@@ -76,8 +79,19 @@
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
-			<version>11</version>
+			<version>13</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-web</artifactId>
+			<version>13</version>
+		</dependency>
+		<dependency>
+        	<groupId>org.openjfx</groupId>
+        	<artifactId>javafx-swing</artifactId>
+        	<version>13</version>
+        	<classifier>win</classifier>
+    	</dependency>
 		<dependency>
 			<groupId>me.ryandw11</groupId>
 			<artifactId>RSQL</artifactId>
